@@ -1,1 +1,395 @@
-placeholder
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Wishlist</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0f0f14;--s:#1a1a24;--s2:#22222e;--s3:#2a2a38;
+    --b:#2a2a3a;--t:#e8e8f0;--t2:#8888a0;--t3:#55556a;
+    --a:#a78bfa;--a2:#7c3aed;--as:#a78bfa22;
+    --pk:#f472b6;--gn:#34d399;--or:#fb923c;--bl:#60a5fa;--rd:#f87171;
+    --r:12px;
+  }
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;overflow:hidden}
+  button{font-family:inherit}
+  .app{display:flex;height:100vh}
+  .sb{width:240px;background:var(--s);border-right:1px solid var(--b);display:flex;flex-direction:column;flex-shrink:0}
+  .sb-hd{padding:20px 16px;border-bottom:1px solid var(--b)}
+  .sb-hd h1{font-size:18px;font-weight:700}.sb-hd h1 span{color:var(--pk)}
+  .sb-hd p{font-size:11px;color:var(--t2);margin-top:2px}
+  .nav{padding:8px;flex:1;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+  .ni{padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;transition:all .15s;color:var(--t2);border:none;background:none;width:100%;text-align:left}
+  .ni:hover{background:var(--s2);color:var(--t)}
+  .ni.act{background:var(--as);color:var(--a);font-weight:600}
+  .ni-i{font-size:16px;width:20px;text-align:center}
+  .ni-c{margin-left:auto;font-size:10px;background:var(--s2);padding:2px 7px;border-radius:8px;color:var(--t3)}
+  .ni.act .ni-c{background:var(--a2);color:#fff}
+  .sb-sep{height:1px;background:var(--b);margin:4px 12px}
+  .sb-label{font-size:10px;color:var(--t3);padding:8px 12px 4px;text-transform:uppercase;letter-spacing:.8px}
+  .chat-btn{margin:8px;padding:10px;border-radius:var(--r);cursor:pointer;background:linear-gradient(135deg,var(--a2),var(--pk));color:#fff;font-size:13px;font-weight:600;text-align:center;border:none}
+  .mn{flex:1;display:flex;flex-direction:column;overflow:hidden}
+  .qa{padding:12px 24px;background:var(--s);border-bottom:1px solid var(--b);display:flex;gap:8px;align-items:center}
+  .qa-in{flex:1;padding:10px 14px;border-radius:20px;border:1px solid var(--b);background:var(--bg);color:var(--t);font-size:14px;outline:none;transition:border .2s}
+  .qa-in:focus{border-color:var(--a)}
+  .qa-in::placeholder{color:var(--t3)}
+  .qa-cats{display:flex;gap:4px}
+  .qa-cat{padding:5px 10px;border-radius:14px;border:1px solid var(--b);background:none;color:var(--t2);font-size:11px;cursor:pointer;transition:all .15s;white-space:nowrap}
+  .qa-cat:hover{border-color:var(--a);color:var(--a)}
+  .qa-cat.sel{background:var(--a2);border-color:var(--a2);color:#fff}
+  .tb{padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--b)}
+  .tb h2{font-size:16px;font-weight:600}
+  .tb-r{display:flex;gap:6px;align-items:center}
+  .tb-search{padding:6px 10px;border-radius:6px;border:1px solid var(--b);background:var(--bg);color:var(--t);font-size:12px;width:160px;outline:none}
+  .tb-search:focus{border-color:var(--a)}
+  .tb-search::placeholder{color:var(--t3)}
+  .vt{display:flex;gap:2px}
+  .vt button{padding:5px 10px;border-radius:6px;border:1px solid var(--b);background:none;color:var(--t2);font-size:11px;cursor:pointer}
+  .vt button.act{background:var(--a2);border-color:var(--a2);color:#fff}
+  .add-btn{padding:6px 12px;border-radius:6px;border:none;cursor:pointer;background:var(--a2);color:#fff;font-size:12px;font-weight:600}
+  .ct{flex:1;overflow-y:auto;padding:16px 24px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+  .wc{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:8px;transition:all .15s;position:relative;cursor:default}
+  .wc:hover{border-color:var(--a);transform:translateY(-1px)}
+  .wc.dn{opacity:.45}.wc.dn .wt{text-decoration:line-through}
+  .wc-top{display:flex;align-items:center;gap:6px}
+  .wtag{font-size:9px;text-transform:uppercase;letter-spacing:.6px;font-weight:600;padding:2px 6px;border-radius:4px}
+  .c-act{background:#7c3aed22;color:var(--a)}.c-plc{background:#60a5fa22;color:var(--bl)}
+  .c-shp{background:#fb923c22;color:var(--or)}.c-fod{background:#f472b622;color:var(--pk)}
+  .c-oth{background:#34d39922;color:var(--gn)}
+  .wt{font-size:14px;font-weight:600;line-height:1.3}
+  .wn{font-size:12px;color:var(--t2);line-height:1.4}
+  .wf{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:4px}
+  .wf-d{font-size:10px;color:var(--t3)}
+  .wf-a{display:flex;gap:2px}
+  .wf-a button{background:none;border:none;cursor:pointer;font-size:14px;padding:3px 5px;border-radius:4px;color:var(--t2);transition:background .1s}
+  .wf-a button:hover{background:var(--s2)}
+  .wf-a .fv{color:var(--pk)}
+  .wpri{position:absolute;top:10px;right:10px;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600}
+  .p-h{background:#f8717122;color:var(--rd)}.p-m{background:#fb923c22;color:var(--or)}
+  .kanban{display:flex;gap:14px;height:100%;overflow-x:auto;padding-bottom:8px}
+  .kb-col{min-width:260px;width:260px;background:var(--s);border:1px solid var(--b);border-radius:var(--r);display:flex;flex-direction:column;flex-shrink:0}
+  .kb-hd{padding:10px 14px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between}
+  .kb-hd h3{font-size:13px;font-weight:600}
+  .kb-cnt{font-size:10px;background:var(--s2);padding:1px 6px;border-radius:6px;color:var(--t2)}
+  .kb-cards{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
+  .kb-card{background:var(--s2);border:1px solid var(--b);border-radius:8px;padding:10px 12px;cursor:default;transition:all .15s}
+  .kb-card:hover{border-color:var(--a)}
+  .kb-card .wt{font-size:13px}
+  .kb-card .wn{font-size:11px;margin-top:4px}
+  .kb-card-ft{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+  .kb-card-ft .wtag{font-size:8px}
+  .kb-card-ft .wf-a button{font-size:12px;padding:2px 4px}
+  .mo{display:none;position:fixed;inset:0;background:#000a;z-index:100;align-items:center;justify-content:center}
+  .mo.open{display:flex}
+  .md{background:var(--s);border:1px solid var(--b);border-radius:14px;padding:24px;width:400px;max-width:90vw;max-height:90vh;overflow-y:auto}
+  .md h3{font-size:16px;margin-bottom:16px}
+  .fg{margin-bottom:14px}
+  .fg label{display:block;font-size:11px;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+  .fg input,.fg textarea,.fg select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--b);background:var(--bg);color:var(--t);font-size:13px;outline:none;font-family:inherit}
+  .fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--a)}
+  .fg textarea{resize:vertical;min-height:60px}
+  .fg select option{background:var(--s)}
+  .md-a{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+  .bc{padding:7px 14px;border-radius:6px;border:1px solid var(--b);background:transparent;color:var(--t2);cursor:pointer;font-size:12px}
+  .bs{padding:7px 16px;border-radius:6px;border:none;background:var(--a2);color:#fff;cursor:pointer;font-size:12px;font-weight:600}
+  .cp{display:none;width:360px;border-left:1px solid var(--b);background:var(--s);flex-direction:column;flex-shrink:0}
+  .cp.open{display:flex}
+  .cp-hd{padding:12px 16px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between}
+  .cp-hd h3{font-size:14px;font-weight:600}
+  .cp-x{background:none;border:none;color:var(--t2);cursor:pointer;font-size:16px}
+  .cp-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+  .cm{max-width:85%;padding:8px 12px;border-radius:10px;font-size:12px;line-height:1.5}
+  .cm.bot{background:var(--s2);align-self:flex-start;border-bottom-left-radius:3px}
+  .cm.usr{background:var(--a2);color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+  .cm .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+  .chip{font-size:10px;padding:3px 8px;border-radius:10px;cursor:pointer;border:1px solid var(--a);color:var(--a);background:transparent;transition:all .15s}
+  .chip:hover{background:var(--as)}
+  .cp-in{padding:10px 12px;border-top:1px solid var(--b);display:flex;gap:6px}
+  .cp-inp{flex:1;padding:8px 12px;border-radius:16px;border:1px solid var(--b);background:var(--bg);color:var(--t);font-size:12px;outline:none}
+  .cp-inp:focus{border-color:var(--a)}
+  .cp-inp::placeholder{color:var(--t3)}
+  .cp-send{width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;background:var(--a2);color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .dots{display:inline-flex;gap:3px;padding:4px 0}
+  .dots span{width:5px;height:5px;border-radius:50%;background:var(--t2);animation:bn 1.2s infinite}
+  .dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+  @keyframes bn{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+  .empty{text-align:center;padding:60px 20px;color:var(--t3);grid-column:1/-1}
+  .empty .ei{font-size:40px;margin-bottom:12px}
+  .empty p{font-size:13px}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gn);color:#000;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
+  .toast.show{opacity:1}
+  @media(max-width:768px){
+    .sb{display:none}.cp{position:fixed;right:0;top:0;bottom:0;z-index:50;width:100%}
+    .ct{padding:12px}.qa{padding:8px 12px}.tb{padding:8px 12px}
+    .cards{grid-template-columns:1fr}
+    .kanban{flex-direction:column;height:auto}
+    .kb-col{min-width:100%;width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sb">
+    <div class="sb-hd"><h1>Our <span>Wishlist</span></h1><p>Things we want to do together</p></div>
+    <div class="nav" id="nav"></div>
+    <button class="chat-btn" onclick="toggleChat()">Ask Assistant</button>
+  </div>
+  <div class="mn">
+    <div class="qa">
+      <input class="qa-in" id="quickAdd" type="text" placeholder="Quick add a wish... (Enter to save)" onkeydown="if(event.key==='Enter')quickSave()">
+      <div class="qa-cats" id="qaCats"></div>
+    </div>
+    <div class="tb">
+      <h2 id="viewTitle">All Wishes</h2>
+      <div class="tb-r">
+        <input class="tb-search" type="text" placeholder="Filter..." id="searchBox" oninput="render()">
+        <div class="vt">
+          <button class="act" id="vGrid" onclick="setViewMode('grid')">Grid</button>
+          <button id="vKanban" onclick="setViewMode('kanban')">Board</button>
+        </div>
+        <button class="add-btn" onclick="openModal()">+ Add</button>
+      </div>
+    </div>
+    <div class="ct"><div id="grid"></div></div>
+  </div>
+  <div class="cp" id="chatPanel">
+    <div class="cp-hd"><h3>Wishlist Assistant</h3><button class="cp-x" onclick="toggleChat()">&times;</button></div>
+    <div class="cp-msgs" id="chatMsgs"></div>
+    <div class="cp-in">
+      <input class="cp-inp" id="chatIn" type="text" placeholder="Ask me for ideas..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="cp-send" onclick="sendChat()">&#9654;</button>
+    </div>
+  </div>
+</div>
+<div class="mo" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="md">
+    <h3 id="mTitle">Add a Wish</h3>
+    <div class="fg"><label>What is it?</label><input type="text" id="fT" placeholder="e.g. Try that new ramen place" onkeydown="if(event.key==='Enter')saveWish()"></div>
+    <div class="fg"><label>Category</label>
+      <select id="fC"><option value="activities">Activities</option><option value="places">Places to Go</option><option value="shopping">Things to Buy</option><option value="food">Food &amp; Drinks</option><option value="other">Other</option></select>
+    </div>
+    <div class="fg"><label>Notes</label><textarea id="fN" placeholder="Optional details..."></textarea></div>
+    <div class="fg"><label>Priority</label>
+      <select id="fP"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option></select>
+    </div>
+    <div class="md-a"><button class="bc" onclick="closeModal()">Cancel</button><button class="bs" onclick="saveWish()">Save</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const C={
+  all:{i:'&#10024;',l:'All Wishes',c:''},
+  activities:{i:'&#127919;',l:'Activities',c:'c-act'},
+  places:{i:'&#128205;',l:'Places to Go',c:'c-plc'},
+  shopping:{i:'&#128722;',l:'Things to Buy',c:'c-shp'},
+  food:{i:'&#127837;',l:'Food & Drinks',c:'c-fod'},
+  other:{i:'&#128161;',l:'Other',c:'c-oth'},
+  favorites:{i:'&#10084;',l:'Favorites',c:''},
+  done:{i:'&#9989;',l:'Done',c:''},
+};
+let W=JSON.parse(localStorage.getItem('wishes')||'[]');
+let cv='all',vm='grid',qaCat='activities',editId=null;
+const $=id=>document.getElementById(id);
+function sv(){localStorage.setItem('wishes',JSON.stringify(W))}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
+function esc(s){const e=document.createElement('span');e.textContent=s;return e.innerHTML}
+function renderQaCats(){
+  $('qaCats').innerHTML=['activities','places','shopping','food','other'].map(k=>
+    `<button class="qa-cat ${qaCat===k?'sel':''}" onclick="setQaCat('${k}')">${C[k].l.split(' ')[0]}</button>`
+  ).join('');
+}
+function setQaCat(c){qaCat=c;renderQaCats()}
+function quickSave(){
+  const v=$('quickAdd').value.trim();if(!v)return;
+  const cat=guessCategory(v)||qaCat;
+  W.push({id:Date.now(),title:v,category:cat,note:'',priority:'low',fav:false,done:false});
+  sv();$('quickAdd').value='';toast('Added!');renderNav();render();
+}
+function counts(){
+  const c={all:W.filter(w=>!w.done).length,favorites:W.filter(w=>w.fav&&!w.done).length,done:W.filter(w=>w.done).length};
+  ['activities','places','shopping','food','other'].forEach(k=>{c[k]=W.filter(w=>w.category===k&&!w.done).length});
+  return c;
+}
+function renderNav(){
+  const cn=counts();
+  $('nav').innerHTML=
+    '<div class="sb-label">Views</div>'+
+    ['all','favorites'].map(k=>'<button class="ni '+(cv===k?'act':'')+'" onclick="setView(\''+k+'\')"><span class="ni-i">'+C[k].i+'</span>'+C[k].l+'<span class="ni-c">'+(cn[k]||0)+'</span></button>').join('')+
+    '<div class="sb-sep"></div><div class="sb-label">Categories</div>'+
+    ['activities','places','shopping','food','other'].map(k=>'<button class="ni '+(cv===k?'act':'')+'" onclick="setView(\''+k+'\')"><span class="ni-i">'+C[k].i+'</span>'+C[k].l+'<span class="ni-c">'+(cn[k]||0)+'</span></button>').join('')+
+    '<div class="sb-sep"></div>'+
+    '<button class="ni '+(cv==='done'?'act':'')+'" onclick="setView(\'done\')"><span class="ni-i">'+C.done.i+'</span>'+C.done.l+'<span class="ni-c">'+(cn.done||0)+'</span></button>';
+}
+function setView(v){cv=v;$('viewTitle').textContent=C[v].l;renderNav();render()}
+function setViewMode(m){vm=m;$('vGrid').className=m==='grid'?'act':'';$('vKanban').className=m==='kanban'?'act':'';render()}
+function getFiltered(){
+  const q=$('searchBox').value.toLowerCase();
+  let f=W.filter(w=>{
+    if(cv==='all')return!w.done;if(cv==='favorites')return w.fav&&!w.done;if(cv==='done')return w.done;
+    return w.category===cv&&!w.done;
+  });
+  if(q)f=f.filter(w=>w.title.toLowerCase().includes(q)||(w.note||'').toLowerCase().includes(q));
+  f.sort((a,b)=>{const p={high:0,medium:1,low:2};return p[a.priority]!==p[b.priority]?p[a.priority]-p[b.priority]:b.id-a.id});
+  return f;
+}
+function cardHtml(w,compact){
+  const cat=C[w.category]||C.other;
+  const d=new Date(w.id).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  if(compact)return '<div class="kb-card '+(w.done?'dn':'')+'">'+
+    (w.priority!=='low'?'<span class="wpri '+(w.priority==='high'?'p-h':'p-m')+'">'+w.priority+'</span>':'')+
+    '<div class="wt">'+esc(w.title)+'</div>'+
+    (w.note?'<div class="wn">'+esc(w.note)+'</div>':'')+
+    '<div class="kb-card-ft"><span class="wtag '+cat.c+'">'+cat.l+'</span><div class="wf-a">'+
+    '<button onclick="toggleFav('+w.id+')" class="'+(w.fav?'fv':'')+'">'+(w.fav?'&#10084;':'&#9825;')+'</button>'+
+    '<button onclick="toggleDone('+w.id+')">'+(w.done?'&#8634;':'&#10003;')+'</button>'+
+    '<button onclick="editWish('+w.id+')">&#9998;</button>'+
+    '<button onclick="deleteWish('+w.id+')">&#128465;</button></div></div></div>';
+  return '<div class="wc '+(w.done?'dn':'')+'">'+
+    (w.priority!=='low'?'<span class="wpri '+(w.priority==='high'?'p-h':'p-m')+'">'+w.priority+'</span>':'')+
+    '<div class="wc-top"><span class="wtag '+cat.c+'">'+cat.l+'</span></div>'+
+    '<div class="wt">'+esc(w.title)+'</div>'+
+    (w.note?'<div class="wn">'+esc(w.note)+'</div>':'')+
+    '<div class="wf"><span class="wf-d">'+d+'</span><div class="wf-a">'+
+    '<button onclick="toggleFav('+w.id+')" class="'+(w.fav?'fv':'')+'">'+(w.fav?'&#10084;':'&#9825;')+'</button>'+
+    '<button onclick="toggleDone('+w.id+')">'+(w.done?'&#8634;':'&#10003;')+'</button>'+
+    '<button onclick="editWish('+w.id+')">&#9998;</button>'+
+    '<button onclick="deleteWish('+w.id+')">&#128465;</button></div></div></div>';
+}
+function render(){
+  const g=$('grid');
+  if(vm==='kanban'&&cv==='all'){
+    const cats=['activities','places','shopping','food','other'];
+    g.innerHTML='<div class="kanban">'+cats.map(k=>{
+      const items=W.filter(w=>w.category===k&&!w.done);
+      const q=$('searchBox').value.toLowerCase();
+      const filtered=q?items.filter(w=>w.title.toLowerCase().includes(q)||(w.note||'').toLowerCase().includes(q)):items;
+      return '<div class="kb-col"><div class="kb-hd"><h3>'+C[k].i+' '+C[k].l+'</h3><span class="kb-cnt">'+filtered.length+'</span></div>'+
+        '<div class="kb-cards">'+(filtered.length?filtered.sort((a,b)=>{const p={high:0,medium:1,low:2};return p[a.priority]-p[b.priority]}).map(w=>cardHtml(w,true)).join(''):'<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Empty</div>')+'</div></div>';
+    }).join('')+
+    '<div class="kb-col"><div class="kb-hd"><h3>&#9989; Done</h3><span class="kb-cnt">'+W.filter(w=>w.done).length+'</span></div>'+
+    '<div class="kb-cards">'+(W.filter(w=>w.done).slice(0,10).map(w=>cardHtml(w,true)).join('')||'<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Empty</div>')+'</div></div></div>';
+    return;
+  }
+  if(vm==='kanban'){
+    const f=getFiltered();
+    const groups={high:f.filter(w=>w.priority==='high'),medium:f.filter(w=>w.priority==='medium'),low:f.filter(w=>w.priority==='low')};
+    g.innerHTML='<div class="kanban">'+['high','medium','low'].map(p=>'<div class="kb-col"><div class="kb-hd"><h3>'+(p==='high'?'&#128293;':p==='medium'?'&#9888;':'&#128161;')+' '+p.charAt(0).toUpperCase()+p.slice(1)+' Priority</h3><span class="kb-cnt">'+groups[p].length+'</span></div>'+
+      '<div class="kb-cards">'+(groups[p].map(w=>cardHtml(w,true)).join('')||'<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Empty</div>')+'</div></div>').join('')+'</div>';
+    return;
+  }
+  const f=getFiltered();
+  if(!f.length){g.innerHTML='<div class="cards"><div class="empty"><div class="ei">'+(C[cv].i||'&#10024;')+'</div><p>No wishes here yet. Type above to add one!</p></div></div>';return;}
+  g.innerHTML='<div class="cards">'+f.map(w=>cardHtml(w,false)).join('')+'</div>';
+}
+function openModal(){
+  editId=null;$('mTitle').textContent='Add a Wish';$('fT').value='';
+  $('fC').value=cv!=='all'&&cv!=='favorites'&&cv!=='done'?cv:'activities';
+  $('fN').value='';$('fP').value='low';$('modal').classList.add('open');
+  setTimeout(()=>$('fT').focus(),100);
+}
+function closeModal(){$('modal').classList.remove('open')}
+function saveWish(){
+  const t=$('fT').value.trim();if(!t)return;
+  if(editId){const w=W.find(w=>w.id===editId);if(w){w.title=t;w.category=$('fC').value;w.note=$('fN').value.trim();w.priority=$('fP').value}}
+  else W.push({id:Date.now(),title:t,category:$('fC').value,note:$('fN').value.trim(),priority:$('fP').value,fav:false,done:false});
+  sv();closeModal();toast(editId?'Updated!':'Added!');renderNav();render();
+}
+function editWish(id){
+  const w=W.find(w=>w.id===id);if(!w)return;editId=id;
+  $('mTitle').textContent='Edit Wish';$('fT').value=w.title;$('fC').value=w.category;$('fN').value=w.note||'';$('fP').value=w.priority;
+  $('modal').classList.add('open');
+}
+function deleteWish(id){W=W.filter(w=>w.id!==id);sv();toast('Removed');renderNav();render()}
+function toggleFav(id){const w=W.find(w=>w.id===id);if(w){w.fav=!w.fav;sv();renderNav();render()}}
+function toggleDone(id){const w=W.find(w=>w.id===id);if(w){w.done=!w.done;sv();toast(w.done?'Done!':'Restored');renderNav();render()}}
+function guessCategory(t){
+  t=t.toLowerCase();
+  if(/eat|food|restaurant|cook|ramen|sushi|pizza|cafe|tea|dessert|hawker|dinner|lunch|brunch|bake/.test(t))return'food';
+  if(/visit|travel|trip|beach|park|museum|hike|trail|mountain|city|staycation|hotel|resort|zoo|garden/.test(t))return'places';
+  if(/buy|gadget|plant|gift|book|blanket|kit|equipment|decor|order|purchase|shop/.test(t))return'shopping';
+  if(/try|class|escape|pottery|kayak|climb|swim|yoga|dance|movie|game|concert|show|sing/.test(t))return'activities';
+  return null;
+}
+let chatH=[];
+function toggleChat(){
+  const p=$('chatPanel');p.classList.toggle('open');
+  if(p.classList.contains('open')&&!chatH.length){
+    botMsg("Hi! I can help find ideas for things to do, eat, buy, or places to visit. Just ask!",["Date night ideas","Best food spots","Weekend activities","Gift ideas"]);
+  }
+  setTimeout(()=>$('chatIn').focus(),100);
+}
+function botMsg(t,chips){chatH.push({r:'bot',t:t,chips:chips});renderChat()}
+function usrMsg(t){chatH.push({r:'user',t:t});renderChat()}
+function renderChat(){
+  const el=$('chatMsgs');
+  el.innerHTML=chatH.map(m=>{
+    if(m.r==='user')return'<div class="cm usr">'+esc(m.t)+'</div>';
+    let h='<div class="cm bot">'+m.t.replace(/\n/g,'<br>');
+    if(m.chips&&m.chips.length)h+='<div class="chips">'+m.chips.map(c=>'<button class="chip" onclick="chipClick(\''+esc(c).replace(/'/g,"\\'")+'\')">'+esc(c)+'</button>').join('')+'</div>';
+    return h+'</div>';
+  }).join('');el.scrollTop=el.scrollHeight;
+}
+function chipClick(t){$('chatIn').value=t;sendChat()}
+function showTyping(){$('chatMsgs').innerHTML+='<div class="cm bot" id="typ"><div class="dots"><span></span><span></span><span></span></div></div>';$('chatMsgs').scrollTop=$('chatMsgs').scrollHeight}
+function rmTyping(){var e=$('typ');if(e)e.remove()}
+async function sendChat(){
+  var t=$('chatIn').value.trim();if(!t)return;$('chatIn').value='';usrMsg(t);
+  if(t.toLowerCase().startsWith('add:')){
+    var title=t.substring(4).trim();
+    W.push({id:Date.now(),title:title,category:guessCategory(title)||'activities',note:'Added via assistant',priority:'low',fav:false,done:false});
+    sv();renderNav();render();botMsg('Added "'+title+'" to your wishlist!');toast('Added!');return;
+  }
+  showTyping();
+  try{var r=await searchWeb(t);rmTyping();
+    if(r.length){var resp="Here are some ideas:\n\n";var ch=[];
+      r.forEach(function(x,i){resp+='<b>'+(i+1)+'. '+esc(x.title)+'</b>\n'+esc(x.snippet)+'\n\n';if(i<3)ch.push("Add: "+x.title.substring(0,40))});
+      resp+="Tap a chip to add to your wishlist!";botMsg(resp,ch);
+    }else localResponse(t);
+  }catch(e){rmTyping();localResponse(t)}
+}
+async function searchWeb(q){
+  try{var r=await fetch('https://api.duckduckgo.com/?q='+encodeURIComponent(q)+'&format=json&no_html=1&skip_disambig=1');
+    var d=await r.json();var res=[];
+    if(d.Abstract)res.push({title:d.Heading||q,snippet:d.Abstract});
+    if(d.RelatedTopics)d.RelatedTopics.slice(0,5).forEach(function(t){
+      if(t.Text)res.push({title:t.Text.split(' - ')[0]||t.Text.substring(0,60),snippet:t.Text});
+      if(t.Topics)t.Topics.slice(0,2).forEach(function(s){if(s.Text)res.push({title:s.Text.split(' - ')[0],snippet:s.Text})});
+    });
+    return res.slice(0,5);
+  }catch(e){return[]}
+}
+function localResponse(text){
+  var t=text.toLowerCase();
+  var ideas={
+    food:{r:"Food ideas:",items:["Try a new ramen shop","Homemade pizza night","Visit a local hawker centre","Afternoon tea at a cafe","Cook a new recipe together","Food truck festival","Dessert bar hopping","Sushi omakase experience"],ch:["Japanese food","Cafe hopping","Home cooking ideas"]},
+    restaurant:{r:"Restaurant ideas:",items:["Fine dining date night","Hidden gem local eatery","Rooftop restaurant","Farm-to-table experience","Themed restaurant adventure"],ch:["Romantic restaurants","Budget eats","New cuisines"]},
+    date:{r:"Date ideas:",items:["Sunset picnic at the park","Movie marathon at home","Couples cooking class","Visit a night market","Stargazing evening","Art gallery visit","Bike ride together","Board game cafe"],ch:["Indoor dates","Outdoor dates","Adventure dates"]},
+    activity:{r:"Fun activities:",items:["Escape room challenge","Pottery or art class","Hiking a new trail","Kayaking","Visit a museum","Volunteer together","Photography walk","Learn something new together"],ch:["Creative","Outdoor","Learning"]},
+    travel:{r:"Travel ideas:",items:["Weekend staycation","Road trip to nearby town","Beach getaway","Mountain retreat","City exploration day","Visit a national park","Cultural heritage trail"],ch:["Beach","City breaks","Nature"]},
+    gift:{r:"Gift ideas:",items:["Personalised photo book","Experience voucher","Subscription box","Handmade craft","Smart home gadget","Cozy blanket and book set","Wellness spa kit"],ch:["Tech gifts","Sentimental","Practical"]},
+    buy:{r:"Things to check out:",items:["New kitchen gadget","Indoor plants","Matching couple items","Home decor upgrade","Fitness equipment","Board games collection"],ch:["Home items","Tech gadgets","Fun buys"]}
+  };
+  for(var k in ideas){if(ideas.hasOwnProperty(k)&&t.indexOf(k)!==-1){
+    var d=ideas[k];var sel=d.items.sort(function(){return Math.random()-.5}).slice(0,5);
+    var msg=d.r+"\n\n";sel.forEach(function(x,i){msg+=(i+1)+'. '+x+'\n'});
+    msg+="\nTap to add any!";botMsg(msg,d.ch.concat(sel.slice(0,2).map(function(s){return"Add: "+s})));return;
+  }}
+  var all=[];for(var k2 in ideas){if(ideas.hasOwnProperty(k2))all=all.concat(ideas[k2].items)}
+  var random=all.sort(function(){return Math.random()-.5}).slice(0,5);
+  var msg2="Some random ideas:\n\n";random.forEach(function(x,i){msg2+=(i+1)+'. '+x+'\n'});
+  msg2+="\nAsk about food, dates, activities, travel, or gifts!";
+  botMsg(msg2,["Food ideas","Date ideas","Activity ideas","Gift ideas"]);
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='/'&&!e.ctrlKey&&!e.metaKey&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){
+    e.preventDefault();$('quickAdd').focus();
+  }
+  if(e.key==='Escape'){closeModal();var cp=$('chatPanel');if(cp.classList.contains('open'))cp.classList.remove('open')}
+});
+renderQaCats();renderNav();render();
+</script>
+</body>
+</html>
